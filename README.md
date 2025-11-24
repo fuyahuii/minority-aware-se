@@ -47,6 +47,7 @@ python synthesis_reasoning.py
 #### 2. Supervised Fine-Tuning (SFT)
 
 Train the model with the CoPeR prompt:
+
 Main script: ```sft_coper.py```
 ```bash
 bash scripts/sft/coper.sh
@@ -67,6 +68,7 @@ python m2pc.py
 #### 4. Preference-Adaptive Reinforcement Learning (PAda-PPO)
 
 Train with preference-adaptive PPO:
+
 Main script: ```pada-ppo.py```
 
 <!--
@@ -82,6 +84,7 @@ bash scripts/rl_coper/coper_train.sh
 ```
 
 Inference and evaluation:
+
 Main script: ```inference/eval_rl_coper.py```
 <!--
 ```bash
