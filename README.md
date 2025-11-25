@@ -1,7 +1,7 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2511.05407-b31b1b.svg)](https://arxiv.org/abs/2511.05407)
-[![Conference](https://img.shields.io/badge/AACL--IJCNLP-2025-blue)](https://2025.aacl-ijcnlp.org/)
+[![Conference](https://img.shields.io/badge/IJCNLP--AACL-2025-blue)](https://2025.aaclnet.org/)
 
-Official implementation of "[Minority-Aware Satisfaction Estimation in Dialogue Systems via Preference-Adaptive Reinforcement Learning](https://arxiv.org/abs/2511.05407)" accepted at AACL-IJCNLP 2025 (Main Conference).
+Official implementation of "[Minority-Aware Satisfaction Estimation in Dialogue Systems via Preference-Adaptive Reinforcement Learning](https://arxiv.org/abs/2511.05407)" accepted at IJCNLP-AACL 2025 (Main Conference).
 
 Authors: Yahui Fu, Zi Haur Pang, Tatsuya Kawahara
 
