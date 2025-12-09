@@ -375,3 +375,69 @@ def collate_fn(batch, tokenizer,args):
         'generate_prefix_kwargs': generate_prefix_kwargs,
         'standard_kwargs': standard_kwargs,  
     }
+    
+
+def preprocess_function(examples, tokenizer, max_length=1280, label_max_len=256):
+    input_texts = [instr + "\n\n" + inp for instr, inp in zip(examples["instruction"], examples["input"])]
+    output_texts = examples["output"]
+    
+    input_ids = []
+    attention_masks = []
+    labels = []
+    
+    for input_text, output_text in zip(input_texts, output_texts):
+        input_tokens = tokenizer(
+            input_text,
+            padding=False,
+            truncation=True,
+            max_length=max_length - label_max_len,  # 1024
+            add_special_tokens=True
+        )["input_ids"]
+        
+        output_tokens = tokenizer(
+            output_text,
+            padding=False,
+            truncation=True,
+            max_length=label_max_len - 1,  # 255，留1个给EOS
+            add_special_tokens=False
+        )["input_ids"]
+        
+        full_input_ids = input_tokens + output_tokens + [tokenizer.eos_token_id]
+        
+        input_len = len(input_tokens)
+        label = [-100] * input_len + output_tokens + [tokenizer.eos_token_id]
+        
+        input_ids.append(full_input_ids)
+        labels.append(label)
+        attention_masks.append([1] * len(full_input_ids))
+    
+    return {
+        "input_ids": input_ids,
+        "attention_mask": attention_masks,
+        "labels": labels
+    }   
+    
+    
+def tokenize_testdata(dataset, tokenizer, max_length=1024):
+    """
+    Output: dict: keys: input_ids, attention_mask, prompt_text
+    """
+    if isinstance(dataset, pd.DataFrame):
+        dataset = dataset.to_dict("records")
+
+    original_padding_side = tokenizer.padding_side
+    tokenizer.padding_side = 'left'
+    
+    prompts = [ex["instruction"] + "\n\n" + ex["input"] for ex in dataset]
+    tokens = tokenizer(prompts, 
+                       return_tensors="pt", 
+                       padding=True, 
+                       truncation=True, 
+                       max_length=max_length, 
+                       add_special_tokens=True,
+                       pad_to_multiple_of=8)
+    
+    tokens["prompt_text"] = prompts
+    
+    tokenizer.padding_side = original_padding_side
+    return tokens

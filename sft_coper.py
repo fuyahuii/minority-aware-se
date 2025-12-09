@@ -25,7 +25,7 @@ from sklearn.metrics import (accuracy_score,
 import bitsandbytes as bnb
 from utils.logger_utils import setup_logging
 from utils.CoPeR import generate_coper_prompt_training, generate_coper_prompt_inference
-from utils.tokenization import preprocess_function_new, tokenize_testdata,preprocess_function,preprocess_function_llama3,tokenize_testdata_llama3,preprocess_function_truncations,preprocess_function_truncations_llama3
+from utils.tokenization import preprocess_function, tokenize_testdata
 from sklearn.utils import resample
 from collections import Counter
 from utils.util import WeightedLossTrainer
@@ -366,12 +366,12 @@ def main():
             model.model_parallel = True
             
         tokenized_train = train_data.map(
-            lambda examples: preprocess_function_new(examples, tokenizer=tokenizer,max_length=1280, label_max_len=256),
+            lambda examples: preprocess_function(examples, tokenizer=tokenizer,max_length=1280, label_max_len=256),
             batched=True,
             remove_columns=train_data.column_names,
         )
         tokenized_eval = eval_data.map(
-            lambda examples: preprocess_function_new(examples, tokenizer=tokenizer,max_length=1280, label_max_len=256),
+            lambda examples: preprocess_function(examples, tokenizer=tokenizer,max_length=1280, label_max_len=256),
             batched=True,
             remove_columns=eval_data.column_names
         )
